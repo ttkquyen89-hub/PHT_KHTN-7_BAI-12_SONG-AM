@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phiếu Học Tập - Bài 12: Sóng Âm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        /* Hiệu ứng focus cho textarea */
+        textarea:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Input dạng điền vào chỗ trống */
+        .input-inline {
+            border: none;
+            border-bottom: 2px dashed #9ca3af;
+            background: transparent;
+            padding: 0 8px;
+            color: #1d4ed8;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .input-inline:focus {
+            border-bottom: 2px solid #2563eb;
+            background-color: #eff6ff;
+        }
+
+        /* Input trong bảng */
+        .table-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 8px;
+            outline: none;
+            color: #374151;
+            transition: background-color 0.2s ease;
+        }
+        .table-input:focus {
+            background-color: #eff6ff;
+            border-radius: 4px;
+        }
+
+        /* Tùy chỉnh mũi tên cho thẻ select */
+        select.quiz-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.2em;
+        }
+        select.input-inline {
+            background-position: right 0.2rem center;
+            padding-right: 1.5rem;
+            cursor: pointer;
+        }
+        select.table-input {
+            background-position: right 0.2rem center;
+            padding-right: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Màu sắc khi chấm điểm đúng / sai */
+        .correct-ans {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #166534 !important;
+        }
+        .wrong-ans {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+        }
+
+        /* Hiệu ứng chữ 3D màu đỏ đậm */
+        .title-3d-red {
+            color: #8b0000;
+            text-shadow: 2px 2px 0px #5a0000,
+                         4px 4px 0px #3a0000,
+                         6px 6px 0px #1a0000,
+                         8px 8px 12px rgba(0, 0, 0, 0.75);
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased p-4 md:p-8 text-xl md:text-2xl leading-relaxed">
+
+    <!-- Khung chính của phiếu học tập -->
+    <main class="w-full bg-white p-6 md:p-10 lg:p-14 rounded-2xl shadow-xl">
+        
+        <!-- HEADER -->
+        <header class="text-center mb-12 pb-8 border-b-2 border-gray-100">
+            <h1 class="text-4xl md:text-5xl lg:text-7xl font-black title-3d-red uppercase mb-6 tracking-wide">Phiếu Học Tập Chuẩn Bị Bài</h1>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold title-3d-red mb-10">Môn Khoa học tự nhiên – Bài 12: Sóng âm</h2>
+            
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-12">
+                <div class="flex items-center w-full md:w-auto">
+                    <label class="font-bold text-gray-700 mr-4 whitespace-nowrap">Họ và tên:</label>
+                    <input type="text" class="input-inline w-full md:w-96 text-xl md:text-2xl p-2" placeholder="Nhập họ và tên...">
+                </div>
+                <div class="flex items-center w-full md:w-auto">
+                    <label class="font-bold text-gray-700 mr-4 whitespace-nowrap">Lớp:</label>
+                    <input type="text" class="input-inline w-full md:w-48 text-center text-xl md:text-2xl p-2" placeholder="VD: 7A1">
+                </div>
+            </div>
+        </header>
+
+        <!-- PHẦN I -->
+        <section class="mb-10 bg-blue-50 border-2 border-blue-200 rounded-3xl shadow-md p-6 md:p-10 transition-all hover:shadow-lg">
+            <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-700 flex items-center mb-8">
+                <span class="bg-blue-200 text-blue-800 py-1 px-4 rounded-lg mr-4 shadow-sm">I</span> DAO ĐỘNG VÀ SÓNG
+            </h3>
+            
+            <div class="space-y-6 pl-2 md:pl-4">
+                <!-- Câu 1 -->
+                <div>
+                    <p class="font-medium mb-2">1. Quan sát Hình 12.1, khi kéo đầu A của thanh thép xuống rồi thả ra, đầu A chuyển động như thế nào?</p>
+                    <select class="quiz-select w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-gray-700 outline-none transition-all cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200" data-answer="A">
+                        <option value="" disabled selected>--- Chọn đáp án ---</option>
+                        <option value="A">chuyển động lên, xuống quanh vị trí cân bằng</option>
+                        <option value="B">chuyển động sang trái, phải liên tục</option>
+                        <option value="C">đứng yên tại chỗ không chuyển động</option>
+                    </select>
+                </div>
+
+                <!-- Câu 2 -->
+                <div>
+                    <p class="font-medium mb-2 leading-loose">
+                        2. Dựa vào mô tả trong SGK, hãy hoàn thành câu: Chuyển động qua lại quanh một vị trí cân bằng được gọi là 
+                        <select class="quiz-select input-inline min-w-[200px]" data-answer="B">
+                            <option value="" disabled selected>--- Chọn đáp án ---</option>
+                            <option value="A">chuyển động tịnh tiến</option>
+                            <option value="B">dao động</option>
+                            <option value="C">quỹ đạo</option>
+                        </select>
+                    </p>
+                </div>
+
+                <!-- Câu 3 -->
+                <div>
+                    <p class="font-medium mb-2">3. Quan sát Hình 12.2, đầu A dao động làm đầu S trên mặt nước dao động. Hiện tượng gì lan truyền trên mặt nước?</p>
+                    <select class="quiz-select w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-gray-700 outline-none transition-all cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200" data-answer="B">
+                        <option value="" disabled selected>--- Chọn đáp án ---</option>
+                        <option value="A">sóng nước hình vuông</option>
+                        <option value="B">sóng nước hình tròn có tâm S</option>
+                        <option value="C">sóng nước hình tam giác</option>
+                    </select>
+                </div>
+
+                <!-- Câu 4 -->
+                <div>
+                    <p class="font-medium mb-2">4. Quan sát Hình 12.3, khi một đầu lò xo dao động, trên lò xo xuất hiện những vùng như thế nào?</p>
+                    <select class="quiz-select w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-gray-700 outline-none transition-all cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200" data-answer="A">
+                        <option value="" disabled selected>--- Chọn đáp án ---</option>
+                        <option value="A">những đoạn nén và dãn liên tiếp</option>
+                        <option value="B">lò xo bị đứt làm đôi</option>
+                        <option value="C">lò xo không có sự thay đổi hình dạng</option>
+                    </select>
+                </div>
+
+                <!-- Câu 5 -->
+                <div>
+                    <p class="font-medium mb-2">5. Từ các ví dụ trên, em hãy nêu điểm chung giữa sự lan truyền trên mặt nước và sự lan truyền trên lò xo.</p>
+                    <select class="quiz-select w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-gray-700 outline-none transition-all cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200" data-answer="A">
+                        <option value="" disabled selected>--- Chọn đáp án ---</option>
+                        <option value="A">đều là sự lan truyền dao động trong môi trường</option>
+                        <option value="B">đều truyền đi với cùng một tốc độ</option>
+                        <option value="C">đều tạo ra âm thanh rất to</option>
+                    </select>
+                </div>
+
+                <!-- Câu 6 -->
+                <div>
+                    <p class="font-medium mb-2">6. Ghi thêm một ví dụ về dao động mà em quan sát được trong đời sống.</p>
+                    <select class="quiz-select w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-gray-700 outline-none transition-all cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200" data-answer="B">
+                        <option value="" disabled selected>--- Chọn đáp án ---</option>
+                        <option value="A">Chiếc xe ô tô đang chạy thẳng</option>
+                        <option value="B">Chiếc võng đung đưa qua lại</option>
+                        <option value="C">Quả táo nằm yên trên bàn</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHẦN II -->
+        <section class="mb-10 bg-green-50 border-2 border-green-200 rounded-3xl shadow-md p-6 md:p-10 transition-all hover:shadow-lg">
+            <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold text-green-700 flex items-center mb-8">
+                <span class="bg-green-200 text-green-800 py-1 px-4 rounded-lg mr-4 shadow-sm">II</span> NGUỒN ÂM
+            </h3>
+            
+            <div class="space-y-6 pl-2 md:pl-4">
+                <!-- Câu 1 (Bảng) -->
+                <div>
+                    <p class="font-medium mb-3">1. Quan sát Hình 12.4 (mặt trống, dây đàn, cây sáo, âm thoa), hãy ghi tên nguồn âm và bộ phận dao động tạo ra âm thanh.</p>
+                    <div class="overflow-x-auto rounded-lg border border-green-300 bg-white shadow-sm">
+                        <table class="w-full text-left border-collapse min-w-[600px]">
+                            <thead>
+                                <tr class="bg-green-100 text-green-800">
+                                    <th class="border-b border-r border-green-300 p-3 w-1/4">Nguồn âm</th>
+                                    <th class="border-b border-r border-green-300 p-3 w-1/3">Bộ phận dao động</th>
+                                    <th class="border-b border-green-300 p-3">Âm thanh phát ra</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100 hover:bg-green-50 transition-colors">
+                                    <td class="border-r border-gray-200 p-2 font-medium text-gray-700">Mặt trống</td>
+                                    <td class="border-r border-gray-200 p-1">
+                                        <select class="quiz-select table-input w-full" data-answer="A">
+                                            <option value="" disabled selected>--- Chọn ---</option>
+                                            <option value="A">Mặt trống</option>
+                                            <option value="B">Dùi trống</option>
+                                            <option value="C">Đế trống</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-1">
+                                        <select class="quiz-select table-input w-full" data-answer="A">
+                                            <option value="" disabled selected>--- Chọn ---</option>
+                                            <option value="A">Tiếng trống</option>
+                                            <option value="B">Tiếng sáo</option>
+                                            <option value="C">Tiếng gió</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-green-50 transition-colors">
+                                    <td class="border-r border-gray-200 p-2 font-medium text-gray-700">Dây đàn</td>
+                                    <td class="border-r border-gray-200 p-1">
+                                        <select class="quiz-select table-input w-full" data-answer="A">
+                                            <option value="" disabled selected>--- Chọn ---</option>
+                                            <option value="A">Dây đàn</option>
+                                            <option value="B">Thùng đàn</option>
+                                            <option value="C">Cần đàn</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-1">
+                                        <select class="quiz-select table-input w-full" data-answer="A">
+                                            <option value="" disabled selected>--- Chọn ---</option>
+                                            <option value="A">Tiếng đàn</option>
+                                            <option value="B">Tiếng chuông</option>
+                                            <option value="C">Tiếng chim</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-green-50 transition-colors">
+                                    <td class="border-r border-gray-200 p-2 font-medium text-gray-700">Cây sáo</td>
+                                    <td class="border-r border-gray-200 p-1">
+                                        <select class="quiz-select table-input w-full" data-answer="A">
+                                            <option value="" disabled selected>--- Chọn ---</option>
+                                            <option value="A">Cột không khí trong ống sáo</option>
+                                            <option value="B">Vỏ ống sáo</option>
+                                            <option value="C">Các ngón tay</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-1">
+                                        <select class="quiz-select table-input w-full" data-answer="A">
+                                            <option value="" disabled selected>--- Chọn ---</option>
+                                            <option value="A">Tiếng sáo</option>
+                                            <option value="B">Tiếng đàn</option>
+                                            <option value="C">Tiếng rè</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-green-50 transition-colors">
+                                    <td class="border-r border-gray-200 p-2 font-medium text-gray-700">Âm thoa</td>
+                                    <td class="border-r border-gray-200 p-1">
+                                        <select class="quiz-select table-input w-full" data-answer="A">
+                                            <option value="" disabled selected>--- Chọn ---</option>
+                                            <option value="A">Hai nhánh âm thoa</option>
+                                            <option value="B">Cán âm thoa</option>
+                                            <option value="C">Hộp cộng hưởng</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-1">
+                                        <select class="quiz-select table-input w-full" data-answer="A">
+                                            <option value="" disabled selected>--- Chọn ---</option>
+                                            <option value="A">Tiếng u u</option>
+                                            <option value="B">Tiếng bíp</option>
+                                            <option value="C">Tiếng tách tách</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Câu 2 -->
+                <div>
+                    <p class="font-medium mb-2 leading-loose">
+                        2. Nguồn âm là 
+                        <select class="quiz-select input-inline min-w-[300px]" data-answer="A">
+                            <option value="" disabled selected>--- Chọn đáp án ---</option>
+                            <option value="A">nguồn phát ra âm, các nguồn âm đều dao động</option>
+                            <option value="B">vật đứng yên phát ra tiếng</option>
+                            <option value="C">màng nhĩ trong tai người</option>
+                        </select>
+                    </p>
+                </div>
+
+                <!-- Câu 3 -->
+                <div>
+                    <p class="font-medium mb-2">3. Điểm chung của các nguồn âm trong Hình 12.4 là gì?</p>
+                    <select class="quiz-select w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-gray-700 outline-none transition-all cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200" data-answer="A">
+                        <option value="" disabled selected>--- Chọn đáp án ---</option>
+                        <option value="A">đều dao động khi phát ra âm thanh</option>
+                        <option value="B">đều được làm bằng kim loại</option>
+                        <option value="C">đều có kích thước rất lớn</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHẦN III -->
+        <section class="mb-10 bg-purple-50 border-2 border-purple-200 rounded-3xl shadow-md p-6 md:p-10 transition-all hover:shadow-lg">
+            <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold text-purple-700 flex items-center mb-8">
+                <span class="bg-purple-200 text-purple-900 py-1 px-4 rounded-lg mr-4 shadow-sm">III</span> SÓNG ÂM
+            </h3>
+            
+            <div class="space-y-6 pl-2 md:pl-4">
+                <!-- Câu 1 -->
+                <div>
+                    <p class="font-medium mb-2">1. Đọc phần III và quan sát Hình 12.5. Khi màng loa dao động, lớp không khí tiếp xúc với màng loa xảy ra điều gì?</p>
+                    <select class="quiz-select w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-gray-700 outline-none transition-all cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200" data-answer="B">
+                        <option value="" disabled selected>--- Chọn đáp án ---</option>
+                        <option value="A">đứng yên không thay đổi</option>
+                        <option value="B">dao động (nén, dãn)</option>
+                        <option value="C">biến mất khỏi không khí</option>
+                    </select>
+                </div>
+
+                <!-- Câu 2 -->
+                <div>
+                    <p class="font-medium mb-2">2. Sự dao động của không khí được truyền đến tai người nghe như thế nào?</p>
+                    <select class="quiz-select w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-gray-700 outline-none transition-all cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200" data-answer="A">
+                        <option value="" disabled selected>--- Chọn đáp án ---</option>
+                        <option value="A">Lớp không khí này làm lớp kế tiếp dao động, cứ thế truyền tới tai ta</option>
+                        <option value="B">Bay thẳng thành một đường duy nhất đến tai</option>
+                        <option value="C">Bị chặn lại ở bên ngoài màng nhĩ</option>
+                    </select>
+                </div>
+
+                <!-- Câu 3 -->
+                <div>
+                    <p class="font-medium mb-2 leading-loose">
+                        3. Hoàn thành kết luận: Sóng âm là sự 
+                        <select class="quiz-select input-inline min-w-[350px]" data-answer="A">
+                            <option value="" disabled selected>--- Chọn đáp án ---</option>
+                            <option value="A">lan truyền dao động của nguồn âm trong môi trường</option>
+                            <option value="B">thay đổi nhiệt độ của môi trường truyền</option>
+                            <option value="C">chuyển động của các hạt bụi trong không gian</option>
+                        </select>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHẦN IV -->
+        <section class="mb-10 bg-orange-50 border-2 border-orange-200 rounded-3xl shadow-md p-6 md:p-10 transition-all hover:shadow-lg">
+            <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold text-orange-700 flex items-center mb-8">
+                <span class="bg-orange-200 text-orange-900 py-1 px-4 rounded-lg mr-4 shadow-sm">IV</span> CÁC MÔI TRƯỜNG TRUYỀN ÂM
+            </h3>
+            
+            <div class="space-y-6 pl-2 md:pl-4">
+                <!-- Câu 1 -->
+                <div>
+                    <p class="font-medium mb-2">1. Đọc mục IV và quan sát Hình 12.6. Khi hai bạn dùng cốc giấy nối với nhau bằng dây, bạn B có nghe được tiếng bạn A khi dây được kéo căng không? Giải thích.</p>
+                    <select class="quiz-select w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-gray-700 outline-none transition-all cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200" data-answer="B">
+                        <option value="" disabled selected>--- Chọn đáp án ---</option>
+                        <option value="A">Không, vì dây không thể truyền được âm thanh</option>
+                        <option value="B">Có, vì âm thanh truyền qua sợi dây</option>
+                        <option value="C">Có, vì khoảng cách quá gần nên nghe được qua không khí</option>
+                    </select>
+                </div>
+
+                <!-- Câu 2 -->
+                <div>
+                    <p class="font-medium mb-2">2. Theo em, âm có thể truyền qua những môi trường nào?</p>
+                    <select class="quiz-select w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-gray-700 outline-none transition-all cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200" data-answer="C">
+                        <option value="" disabled selected>--- Chọn đáp án ---</option>
+                        <option value="A">Chỉ truyền được trong chất khí</option>
+                        <option value="B">Chỉ truyền được trong chất rắn và chất lỏng</option>
+                        <option value="C">Chất rắn, chất lỏng, chất khí</option>
+                    </select>
+                </div>
+
+                <!-- Câu 3 -->
+                <div>
+                    <p class="font-medium mb-2">3. Quan sát Hình 12.7: Khi đồng hồ báo thức được đặt trong nước, người nghe có thể nghe thấy âm thanh không? Thí nghiệm này giúp chứng minh điều gì?</p>
+                    <select class="quiz-select w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-gray-700 outline-none transition-all cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200" data-answer="B">
+                        <option value="" disabled selected>--- Chọn đáp án ---</option>
+                        <option value="A">Thí nghiệm chứng minh âm truyền được trong chất rắn</option>
+                        <option value="B">Thí nghiệm chứng minh âm truyền được trong chất lỏng</option>
+                        <option value="C">Thí nghiệm chứng minh âm không truyền được trong nước</option>
+                    </select>
+                </div>
+
+                <!-- Câu 4 -->
+                <div>
+                    <p class="font-medium mb-2">4. Quan sát Hình 12.8: Vì sao khi không khí trong bình bị hút gần hết, người nghe không còn nghe rõ tiếng chuông?</p>
+                    <select class="quiz-select w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-gray-700 outline-none transition-all cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200" data-answer="B">
+                        <option value="" disabled selected>--- Chọn đáp án ---</option>
+                        <option value="A">Vì chuông đã bị hỏng</option>
+                        <option value="B">Vì môi trường chân không không có vật chất để truyền dao động</option>
+                        <option value="C">Vì bình thủy tinh cách âm tuyệt đối</option>
+                    </select>
+                </div>
+
+                <!-- Câu 5 -->
+                <div>
+                    <p class="font-medium mb-2">5. Từ Hình 12.8, hãy rút ra kết luận về sự truyền âm trong chân không.</p>
+                    <select class="quiz-select w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-gray-700 outline-none transition-all cursor-pointer focus:border-blue-500 focus:ring-2 focus:ring-blue-200" data-answer="A">
+                        <option value="" disabled selected>--- Chọn đáp án ---</option>
+                        <option value="A">Âm không truyền được trong chân không</option>
+                        <option value="B">Âm truyền rất nhanh trong chân không</option>
+                        <option value="C">Âm thanh to hơn khi ở trong chân không</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- SUBMIT BUTTON -->
+        <div class="flex justify-center mt-16 mb-6">
+            <button onclick="submitWork()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-2xl py-5 px-16 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                Hoàn thành & Chấm điểm
+            </button>
+        </div>
+    </main>
+
+    <!-- CUSTOM MODAL (Thay thế cho alert) -->
+    <div id="successModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 z-50 p-4">
+        <div class="bg-white rounded-3xl shadow-2xl p-10 max-w-lg w-full transform scale-90 transition-transform duration-300" id="modalContent">
+            <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6">
+                <svg class="h-12 w-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+            <h3 class="text-3xl font-bold text-center text-gray-800 mb-4">Kết quả bài làm</h3>
+            <p id="scoreText" class="text-center text-2xl text-gray-600 mb-4">Bạn đã trả lời đúng ...</p>
+            <p id="motivationalMessage" class="text-center text-xl font-bold mb-8"></p>
+            <div class="flex gap-4">
+                <button onclick="resetWork()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-4 px-6 text-xl rounded-xl transition duration-200">
+                    Làm lại
+                </button>
+                <button onclick="closeModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 text-xl rounded-xl transition duration-200">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script xử lý sự kiện -->
+    <script>
+        const modal = document.getElementById('successModal');
+        const modalContent = document.getElementById('modalContent');
+        const scoreText = document.getElementById('scoreText');
+
+        function submitWork() {
+            const selects = document.querySelectorAll('.quiz-select');
+            let correctCount = 0;
+            let totalCount = selects.length;
+            
+            selects.forEach(select => {
+                const answer = select.getAttribute('data-answer');
+                const userValue = select.value;
+                
+                // Xóa các class cũ trước khi chấm lại
+                select.classList.remove('correct-ans', 'wrong-ans');
+                
+                if (userValue === answer) {
+                    correctCount++;
+                    select.classList.add('correct-ans');
+                } else {
+                    select.classList.add('wrong-ans');
+                }
+            });
+
+            // Cập nhật nội dung điểm
+            scoreText.innerHTML = `Bạn đã trả lời đúng <br> <span class="text-blue-600 text-5xl font-extrabold mt-4 block">${correctCount} / ${totalCount}</span>`;
+
+            // Thông điệp động viên
+            const motivationalMessage = document.getElementById('motivationalMessage');
+            if (correctCount === totalCount) {
+                motivationalMessage.textContent = "Tuyệt vời! Bạn đã hoàn thành xuất sắc!";
+                motivationalMessage.className = "text-center text-2xl font-bold text-green-600 mb-8";
+            } else if (correctCount >= totalCount / 2) {
+                motivationalMessage.textContent = "Làm tốt lắm! Hãy cố gắng hơn chút nữa nhé.";
+                motivationalMessage.className = "text-center text-2xl font-bold text-blue-600 mb-8";
+            } else {
+                motivationalMessage.textContent = "Chưa đạt! Bạn cần ôn lại bài học nhé.";
+                motivationalMessage.className = "text-center text-2xl font-bold text-red-600 mb-8";
+            }
+
+            // Mở modal thông báo thành công
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-90');
+            modalContent.classList.add('scale-100');
+        }
+
+        function resetWork() {
+            const selects = document.querySelectorAll('.quiz-select');
+            selects.forEach(select => {
+                select.value = "";
+                select.classList.remove('correct-ans', 'wrong-ans');
+            });
+            const textInputs = document.querySelectorAll('input[type="text"]');
+            textInputs.forEach(input => input.value = "");
+            closeModal();
+        }
+
+        function closeModal() {
+            // Đóng modal
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-90');
+        }
+
+        // Bấm ra ngoài vùng modal để đóng
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
